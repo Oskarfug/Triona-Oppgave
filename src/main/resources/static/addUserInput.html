@@ -1,0 +1,119 @@
+<html>
+<meta charset="UTF-8">
+<title>Bruker Input</title>
+<!--Script for å legge til bruker input-->
+<script>
+
+    function addUserInput() {
+        const navn = document.getElementById('navn');
+        const adresse = document.getElementById('adresse');
+        const telefonNummer = document.getElementById('telefonNummer');
+        const fodselsdato = document.getElementById('fodselsdato');
+        //funksjon for å reversere navn
+        function  reverserNavn(s) {
+            return s.split("").reverse().join("");
+        }
+        //funksjon for å finne tverrsummen av et telefon nummer.
+        function tverrsummen(tlf) {
+            return String(tlf)
+            .toString().split('').reduce((acc, curr) => {
+                   return acc + Number(curr);
+                }, 0);
+
+        }
+        //funksjon for om personen er født i skuddår eller ikke.
+        function finnskuddar(year){
+            const aaret = year.substr(0, 4);
+            if ((0 == aaret % 4) && (0 != aaret % 100) || (0 == aaret % 400)) {
+                return "JA";
+            } else {
+                return "NEI";
+            }
+
+        }
+
+
+        fetch('http://localhost:8080/userInput', {
+            method: 'POST',
+            body: JSON.stringify(
+                {
+                    navn: navn.value,
+                    adresse: adresse.value,
+                    telefonNummer: telefonNummer.value,
+                    fodselsdato: fodselsdato.value,
+                    revNavn: reverserNavn(navn.value),
+                    tverrsumTlf: tverrsummen(telefonNummer.value),
+                    skuddar: finnskuddar(fodselsdato.value)
+                }),
+            headers: {
+                'Content-Type': 'application/json'
+            }})
+    }
+</script>
+<!--Inputs for brukerinputs -->
+<h2 id="brukerinputs">Legg til Bruker Inputs</h2>
+Navn: <input id="navn"><br/>
+Adresse: <input id="adresse" ><br/>
+TelefonNr: <input id="telefonNummer"><br/>
+Fødselsdato: <input id="fodselsdato" type="date"><br/>
+<button onclick="addUserInput()">Lagre</button>
+
+
+<!--CSS for tabell til henting av brukerinputs -->
+<style>
+    th, tbody {
+        border: 1px solid #545454;
+        padding: 5px;
+    }
+    tr:nth-child(even) {
+        background-color: #E2E2E2;
+    }
+</style>
+<script>
+    //Javascript for henting av brukerinputs
+    function getUserInputs() {
+        fetch('http://localhost:8080/userInput')
+            .then(response => response.json())
+            .then(data => {
+                const outputField = document.getElementById('outputField');
+                outputField.innerHTML = '';
+                data.forEach(navn => {
+                    outputField.innerHTML += getUserInputDisplayText(navn);
+                })
+            });
+    }
+
+    function getUserInputDisplayText(navn) {
+        const displayText =
+            `<table>
+                        <tr>
+                            <th>${navn.navn}</th>
+                            <th>${navn.adresse}</th>
+                            <th>${navn.telefonNummer}</th>
+                            <th>${navn.fodselsdato}</th>
+                            <th>${navn.revNavn}</th>
+                            <th>${navn.tverrsumTlf}</th>
+                            <th>${navn.skuddar}</th>
+                        </tr>
+                 </table>`;
+        return displayText;
+    }
+</script>
+<h2 id="userInput-label">BrukerInputs</h2>
+<button onclick="getUserInputs()">Hent BrukerInputs</button><br>
+<div><table>
+    <tr>
+        <th>Navn</th>
+        <th>Adresse</th>
+        <th>TelefonNummer</th>
+        <th>Fødselsdato</th>
+        <th>Reversert Navn</th>
+        <th>TverrsumTlf</th>
+        <th>Skuddår</th>
+    </tr>
+    <tbody id="outputField">
+
+    </tbody>
+</table></div>
+
+</html>
