@@ -1,4 +1,4 @@
-
+/*tabell for databasen som skal lagres som test.mv.db i prosjektfolderen.*/
 CREATE TABLE user_input (
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     navn VARCHAR(250),
