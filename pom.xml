@@ -32,6 +32,7 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			#Lombok er et bibliotek som forenkler noen prosesser i Java som det å skrive getters og setter noe som er brukt i dette prosjektet
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
