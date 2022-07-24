@@ -24,4 +24,15 @@ public class UserInput {
     private String revNavn;
     private String tverrsumTlf;
     private String skuddar;
+    
+// Hvordan jeg ville skrevet en getter og setter uten lombok, en pr. linje (Tenk navn, adresse, telefonNummer osv.)
+// Getter
+//  public String getnavn() {
+//    return navn;
+//  }
+//
+//  // Setter
+//  public void setNavn(String newNavn) {
+//    this.navn = newNavn;
+//  }
 }
